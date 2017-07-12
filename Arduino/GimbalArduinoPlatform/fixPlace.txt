@@ -1,0 +1,97 @@
+URL is https://github.com/alexvonduar/mpu9150-arduino-lib
+
+
+Arduino 9150
+  /*  
+   We changed from following:
+  //MPU.init(MPU_UPDATE_RATE, MPU_MAG_MIX_GYRO_AND_MAG, MAG_UPDATE_RATE, MPU_LPF_RATE);   // start the MPU
+   to following:
+   MPU.init(MPU_UPDATE_RATE, MPU_MAG_MIX_GYRO_ONLY, MAG_UPDATE_RATE, MPU_LPF_RATE);   // start the MPU
+   */
+
+/*  We changed from following:
+//  MPU.printQuaternion(MPU.m_rawQuaternion);              // print the raw quaternion from the dmp
+//  MPU.printVector(MPU.m_rawMag);                         // print the raw mag data
+//  MPU.printVector(MPU.m_rawAccel);                       // print the raw accel data
+//  MPU.printAngles(MPU.m_dmpEulerPose);                   // the Euler angles from the dmp quaternion
+//  MPU.printVector(MPU.m_calAccel);                       // print the calibrated accel data
+//  MPU.printVector(MPU.m_calMag);                         // print the calibrated mag data
+    MPU.printAngles(MPU.m_fusedEulerPose);                 // print the output of the data fusion
+    to following:
+//  MPU.printQuaternion(MPU.m_rawQuaternion);              // print the raw quaternion from the dmp
+//  MPU.printVector(MPU.m_rawMag);                         // print the raw mag data
+//  MPU.printVector(MPU.m_rawAccel);                       // print the raw accel data
+    MPU.printAngles(MPU.m_dmpEulerPose);                   // the Euler angles from the dmp quaternion
+//  MPU.printVector(MPU.m_calAccel);                       // print the calibrated accel data
+//  MPU.printVector(MPU.m_calMag);                         // print the calibrated mag data
+//  MPU.printAngles(MPU.m_fusedEulerPose);                 // print the output of the data fusion    
+ */
+
+
+MPU9150Lib.cpp
+/*
+	  
+We changed from following:
+	  
+m_useAccelCalibration = true;
+	  
+m_useMagCalibration = true;
+	  
+to following:
+	  
+m_useAccelCalibration = false;
+	  
+m_useMagCalibration = false;
+	
+*/
+
+
+/*
+	
+We changed from following:
+	//  got the fifo data so now get the mag data if it's time
+
+	
+if ((millis() - m_lastMagSample) >= m_magInterval) {
+	  
+if ((result = mpu_get_compass_reg(m_rawMag, &timestamp)) != 0) {
+#ifdef MPULIB_DEBUG
+
+Serial.print("Failed to read compass: ");
+		
+Serial.println(result);
+#endif
+		
+return false;
+	  }
+	  //	*** Note mag axes are changed here to align with gyros: Y = -X, X = Y
+
+	  
+m_lastMagSample = millis();
+
+	  
+if (m_useMagCalibration) {
+		
+m_calMag[VEC3_Y] = -(short)(((long)(m_rawMag[VEC3_X] - m_magXOffset) * (long)SENSOR_RANGE) / (long)m_magXRange);
+
+m_calMag[VEC3_X] = (short)(((long)(m_rawMag[VEC3_Y] - m_magYOffset) * (long)SENSOR_RANGE) / (long)m_magYRange);
+	
+m_calMag[VEC3_Z] = (short)(((long)(m_rawMag[VEC3_Z] - m_magZOffset) * (long)SENSOR_RANGE) / (long)m_magZRange);
+	  } 
+else {
+		
+m_calMag[VEC3_Y] = -m_rawMag[VEC3_X];
+		
+m_calMag[VEC3_X] = m_rawMag[VEC3_Y];
+
+m_calMag[VEC3_Z] = m_rawMag[VEC3_Z];
+	  
+}
+	
+}
+	
+to following:
+
+	
+
+*/
